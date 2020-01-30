@@ -1,3 +1,3 @@
 # clip-meta
 
-# All files used in Reproducbility analysis and Cell Line specific gene Identification Pipeline (CLIP) pipeline
+# All files used in reproducibility analysis and Cell Line specific gene Identification Pipeline (CLIP) work
