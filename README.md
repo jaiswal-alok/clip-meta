@@ -6,13 +6,13 @@ CLIP enables systematic meta-analysis and integration of multi-modal omics datas
 First, we define the notion of a “Cancer Cell line Specific” (CCS) gene; as a gene that exhibits a molecular attribute unique to a particular cancer cell line. In other words, a CCS gene is unique to a given cell line in reference to all the other cell lines in the particular dataset, i.e. having a context-specific property, and therefore possibly related to a specific cancer subtype or cellular function. Statistically, a gene that has the tendency to be located towards the extremes of the distribution in any given dataset is considered as a CCS gene. For instance, the expression of ERBB2 gene is much higher in HER2 driven breast cancer cell lines, compared to cell lines from other tissue types. Thus, in all HER2+ cell lines, ERBB2 is a CCS gene in the gene expression modality. 
 
 <p align="center"> 
-<img src="images/figure1.png" style="width: 50%; height: 50%"/>​
+<img src="images/figure1.png" style="width: 10%; height: 10%"/>​
 </p>
 
 ## CLIP Flowchart
 
 <p align="center"> 
-<img src="images/figure2.png" style="width: 50%; height: 100%"/>​
+<img src="images/figure2.png" style="width: 25%; height: 50%"/>​
 </p>
 
 ## Citation
