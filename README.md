@@ -20,6 +20,9 @@ First, we define the notion of a “Cancer Cell line Specific” (CCS) gene; as 
 ### Step 1
 
 ```r
+# Code for CLIP exection
+source("clip-meta/R/clip/clip.R")
+
 ###########################################################################
 ### Step 1a: Quantile Normalization and Scaling of continuous datasets  ###
 ### Outlier Evidence Score (OES) scores                                 ###
@@ -31,20 +34,20 @@ source("clip-meta/R/clip/clip_functions.R")
 
 #load processed datasets for each modality 
 load("clip-meta/data/CNV.RData")
-load("clip-meta/dataGEXP.RData")
-load("clip-meta/dataFUNC.RData")
-load("clip-meta/dataMETH.RData")
-load("clip-meta/dataMUT.RData")
-load("clip-meta/dataPEXP.RData")
-load("clip-meta/dataPHOS.RData")
+load("clip-meta/data/GEXP.RData")
+load("clip-meta/data/FUNC.RData")
+load("clip-meta/data/METH.RData")
+load("clip-meta/data/MUT.RData")
+load("clip-meta/data/PEXP.RData")
+load("clip-meta/data/PHOS.RData")
 load("clip-meta/dataTAS.RData")
-
+..
 
 ######################################################################
 ### Step 1b: Proportion scores in binary datasets                  ###
 ######################################################################
 # For binary datasets estimate proportion scores
-
+..
 # Save all processed files 
 save(file="clip-meta/processed_files/clip/Normalized_Modalities.RData",compress="bzip2",
      FUNC.QUANT.LIST, METH.QUANT.LIST, GEXP.QUANT.LIST, PEXP.QUANT.LIST, 
@@ -116,4 +119,4 @@ source("clip-meta/R/reproducibility_analysis/reproducibility_analysis.R")
     }
 
 
-# clip-meta
+
