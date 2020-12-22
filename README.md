@@ -72,7 +72,7 @@ METH.QUANT.LIST <- lapply(METH.QUANT.LIST,QuantNormScale) # Quantile normalizati
 lapply(METH.QUANT.LIST, function(x) x[1:5, 1:5])
 
 #Replace METH with GEXP, PEXP, PHOS, FUNC, TAS or DSS modality names 
-``` 
+
 
 
 ######################################################################
