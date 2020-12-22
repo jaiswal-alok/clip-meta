@@ -1,7 +1,5 @@
 QuantNormScale <- function(dataInput){
-  
-  #library(limma)
-  
+  # dataInput should be a matrix or a data frame, rows = Genes. columns = Cell lines
   #Quantile normalization for making two distributions identical in statistical properties for all cell lines
 
   library(preprocessCore)
@@ -13,7 +11,6 @@ QuantNormScale <- function(dataInput){
     return(x)
   } )
   dataInput.Quant <- normalize.quantiles(as.matrix(dataInput))
-  #dataInput.Quant <- normalizeQuantiles(as.matrix(dataInput))
 
   rownames(dataInput.Quant) <- rownames(dataInput)
   colnames(dataInput.Quant) <- colnames(dataInput)
@@ -28,6 +25,7 @@ QuantNormScale <- function(dataInput){
 }
 
 ResidueAvg <- function(input){
+  #input should be a matrix/dataframe, rows = genes. columns = cell lines
   
   #Average for genes with multiple phosphosites
   inputDF <- as.data.frame(cbind(GeneName=rownames(input), input), stringsAsFactors = F)
@@ -41,6 +39,10 @@ ResidueAvg <- function(input){
 }
 
 BinarizeCNV <- function(CNVData, threshDEL, threshAMP){
+  #CNVData  = copy number data matrix/dataframe
+  #threshDEL = threshold for calling deletion
+  #threshAMP =  threshold for calling amplification
+  
   
   # DELETION 
   CNVData_DEL <- apply(CNVData, 2, function(x){
@@ -66,6 +68,7 @@ BinarizeCNV <- function(CNVData, threshDEL, threshAMP){
 }
 
 CalculatePropScores <- function(binCNVdata){
+  #binCNVdata = binarized copy number data, output of BinarizeCNV
   
   #Proportion of CNV alteration as the measure for context specific property
   geneSums <- rowSums(binCNVdata, na.rm = T)
@@ -114,7 +117,7 @@ IntegrateCCS <- function(listDataStudy, Modality, cellNames, SingleSelectThresho
     print(c)
     cellStudyList <- list()
     
-    # for cell line extract data from each study
+    # for each cell line extract data from each study
     for (i in 1:length(listDataStudy)){
       dataMat <- listDataStudy[[i]]
       dataName <- names(listDataStudy)[i]
@@ -153,6 +156,9 @@ IntegrateCCS <- function(listDataStudy, Modality, cellNames, SingleSelectThresho
 }
 
 PerformIntBin <- function(cellIntMat, Modality){
+  #cellIntMat = dataframe of geneXstudy for each cell line
+  #Modality = any binary data modalities i.e. MUT, CNv_AMP, CNV_DEL
+  
   # Integration of PS scores for binary modalities
   
   data.sub = cellIntMat
@@ -201,6 +207,13 @@ PerformIntBin <- function(cellIntMat, Modality){
 }
 
 PerformIntCont <- function(cellIntMat, SelectIndx, SelectThreshold, SingleSelectThreshold, Modality){
+  
+  #cellIntMat = dataframe of geneXstudy for each cell line
+  #Modality = any continuous data modalities i.e. GEXP. METH. FUNC, TAS and PHOS
+  #SelectThreshold = pfp threshold for selection of CCS genes after Rank integration
+  #SingleSelectThreshold = threshold for selection of top N CCS genes for cell lines profiled in only 1 study
+  
+  
   # Non-parametric integration of CCS scores from continuous modalities
   
   library(RankProd)
@@ -277,7 +290,53 @@ PerformIntCont <- function(cellIntMat, SelectIndx, SelectThreshold, SingleSelect
 
 `%ni%` <- Negate(`%in%`) 
 
+RearrangeCCS <- function(x){
+  
+  xMat <- do.call(rbind,x)
+  xMat$Var <- 1
+  xMat <- unique(xMat)
+  
+  #for FUNCTIONAL - opposite directions
+  xMat$modality[xMat$modality %in% "FUNC_T2"] <-  "FUNC_DOWN"
+  xMat$modality[xMat$modality %in% "FUNC_T1"] <-  "FUNC_UP"
+  
+  #For CNV 
+  xMat$modality[xMat$modality %in% "CNV_AMP_T1"] <-  "CNV_AMP"
+  xMat$modality[xMat$modality %in% "CNV_DEL_T1"] <-  "CNV_DEL"
+  xMat$modality[xMat$modality %in% "MUT_T1"] <-  "MUT"
+  
+  xMat$modality <- gsub("_T1", "_DOWN", xMat$modality) 
+  xMat$modality <- gsub("_T2", "_UP", xMat$modality) 
+  
+  #Remove FUNC_DOWN
+  xMat <- xMat[xMat$modality %ni% "FUNC_DOWN",]
+  
+  #Remove TAS_DOWN
+  xMat <- xMat[xMat$modality %ni% "TAS_DOWN",]
+  
+  #Add dummy variables for consistency
+  xMat.modes <- unique(xMat$modality)
+  xMat.modes.NotPresent <- setdiff(all.modes, xMat.modes)
+  if(length(xMat.modes.NotPresent) > 0){
+    for (p in xMat.modes.NotPresent){
+      addRow <- c(p, xMat$GeneID[1], 0) 
+      xMat <- rbind(xMat, addRow)
+    }
+  }
+  
+  #rCCS matrix for each cellline
+  library(reshape2)
+  xMat.Wide <- dcast(xMat, GeneID~modality, fill=0)
+  xMat.Wide <- xMat.Wide[,c("GeneID", "FUNC_UP", "TAS_UP", "MUT","CNV_AMP","CNV_DEL","METH_UP","METH_DOWN", "GEXP_UP","GEXP_DOWN", "PEXP_UP", "PEXP_DOWN", "PHOS_UP", "PHOS_DOWN" )]
+  xMat.Wide[,-1] <- apply(xMat.Wide[,-1],2,as.numeric)
+  xMat.Wide$Sum <- rowSums(xMat.Wide[,-1])
+  return(xMat.Wide)
+}
+
 ProcessCCSlist <- function(CCSMat.list, keepMode){
+  
+  #CCSMat.list = list of CCS genes after integration, output of IntegrateCCS
+  #keepMode = Obligatorily include a specific modality to identify rCCS genes
   
   # select rCCS genes
   rCCSmat <- lapply(CCSMat.list, function(XDF){
@@ -311,6 +370,9 @@ ProcessCCSlist <- function(CCSMat.list, keepMode){
 
 PerformFisherExact <- function(data, group1.cells, group2.cells, side){
   
+  #data = rCCS matrix/dataframe, rows = genes and cols = cell lines
+  #side = alternative hypothesis for Fisher's Exact test
+  
   group1.data <- data[ ,na.omit(match(group1.cells, colnames(data)))]
   group2.data <- data[ ,na.omit(match(group2.cells, colnames(data)))]
   print(ncol(group1.data))
@@ -340,6 +402,9 @@ PerformFisherExact <- function(data, group1.cells, group2.cells, side){
 }
 
 PerformLIMMA  <- function(data, group1.cells, group2.cells, rtrvIDx){
+  #data = rCCS matrix/dataframe, rows = genes and cols = cell lines
+  #rtrvIDx = index to choose from resulting DE table 
+  
   library(limma)
   
   group1.data <- data[ ,na.omit(match(group1.cells, colnames(data)))]
@@ -370,6 +435,9 @@ PerformLIMMA  <- function(data, group1.cells, group2.cells, rtrvIDx){
 }
 
 PerformRP <- function(data){
+  
+  #data = geneXStudy data frame of OES scores
+  #input for rank product integration
   library(RankProd)
   dType.data.cl <- rep(1, ncol(data)) # define single class
   data.RP <- RankProducts(data, dType.data.cl, calculateProduct = T, 
@@ -381,6 +449,10 @@ PerformRP <- function(data){
 }
 
 PerformDE <- function(brca.subtype, modal.list, modal_name,  ref.drivers ){
+  #brca.subtype = data frame of breast cancer subtype info for cell lines in each column
+  #modal.list = list of data sets from several studies for  each modality 
+  #modal_name = data modality name
+  #ref.drivers = known gold standard driver genes
   
   drivers.list <- list()
   

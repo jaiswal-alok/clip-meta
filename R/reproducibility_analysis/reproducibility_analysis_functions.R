@@ -1,3 +1,19 @@
+loadData <- function(path, modality){
+  library(rhdf5)
+  fname <- paste(path, modality, ".h5", sep="")
+  D.list <- h5dump(fname,load=TRUE)
+  Dmat.list <- list()
+  for (i in 1:length(D.list)){
+    rnames <-  D.list[[i]]$rownames
+    cnames <-  D.list[[i]]$colnames
+    mat <-  D.list[[i]]$mat
+    rownames(mat) <-  rnames
+    colnames(mat) <- cnames
+    Dmat.list[[names(D.list)[i]]] <- mat
+  }
+  return(Dmat.list)
+}
+
 CompareTwoStudies_Rcorr <- function(data1, data2, useCond){
   
   library(Hmisc)

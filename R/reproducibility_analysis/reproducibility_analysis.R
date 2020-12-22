@@ -1,33 +1,145 @@
-##### load site-specific pre-processed data ######
-
-load("clip-meta/data/CNV.RData")
-load("clip-meta/data/GEXP.RData")
-load("clip-meta/data/FUNC.RData")
-load("clip-meta/data/METH.RData")
-load("clip-meta/data/MUT.RData")
-load("clip-meta/data/PEXP.RData")
-load("clip-meta/data/PHOS.RData")
-load("clip-meta/data/TAS.RData")
-
 ##### load functions and packages #####
 source("clip-meta/R/reproducibility_analysis/reproducibility_analysis_functions.R")
+
+##### load modality-specific pre-processed data ######
+path = "clip-meta/data/"
+
+# load Methylation profiles
+modality = "METH"
+METH.list <- loadData(path, modality)
+for (i in 1:length(METH.list)){
+  dname <- names(METH.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = METH.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(METH.list)
+
+# load Mutation profiles
+modality = "MUT"
+MUT.list <- loadData(path, modality)
+for (i in 1:length(MUT.list)){
+  dname <- names(MUT.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = MUT.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(MUT.list)
+
+# load Copy number variation data
+modality = "CNV"
+CNV.list <- loadData(path, modality)
+for (i in 1:length(CNV.list)){
+  dname <- names(CNV.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = CNV.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(CNV.list)
+
+# load Gene expression data
+modality = "GEXP"
+GEXP.list <- loadData(path, modality)
+for (i in 1:length(GEXP.list)){
+  dname <- names(GEXP.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = GEXP.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(GEXP.list)
+
+# load Protein expression data
+modality = "PEXP"
+PEXP.list <- loadData(path, modality)
+for (i in 1:length(PEXP.list)){
+  dname <- names(PEXP.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = PEXP.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(PEXP.list)
+
+# laod Protein phohphorylation data
+modality = "PHOS"
+PHOS.list <- loadData(path, modality)
+for (i in 1:length(PHOS.list)){
+  dname <- names(PHOS.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = PHOS.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(PHOS.list)
+
+# load Functional screening data
+modality = "FUNC"
+FUNC.list <- loadData(path, modality)
+for (i in 1:length(FUNC.list)){
+  dname <- names(FUNC.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = FUNC.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(FUNC.list)
+
+# load Drug sensitivity data
+modality = "DSS"
+DSS.list <- loadData(path, modality)
+for (i in 1:length(DSS.list)){
+  dname <- names(DSS.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = DSS.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(DSS.list)
+
+# load Target Addiction data
+modality = "TAS"
+TAS.list <- loadData(path, modality)
+for (i in 1:length(TAS.list)){
+  dname <- names(TAS.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = TAS.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(TAS.list)
+
 
 ######################################################################
 #####     Assess reproducibility of METHYLATION profiles           ###
 ######################################################################
-rm(list = ls())
 
-load("clip-meta/data/METH.RData")
+# load Methylation profiles
+path = "clip-meta/data/"
+modality = "METH"
+METH.list <- loadData(path, modality)
+for (i in 1:length(METH.list)){
+  dname <- names(METH.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = METH.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(METH.list)
 
-#
+
+# Compute correlation
 METH.COR.NCI60.OHSU <- CompareTwoStudies_Rcorr(meth.nci60, meth.ohsu, "spearman")
 METH.COR.NCI60.GDSC  <- CompareTwoStudies_Rcorr(meth.nci60, meth.gdsc, "spearman")
 METH.COR.NCI60.BROAD  <- CompareTwoStudies_Rcorr(meth.nci60, meth.broad, "spearman")
-METH.COR.OHSU.GDSC  <- CompareTwoStudies_Rcorr(meth.ohsu, meth.gdsc, "spearman")
+METH.COR.OHSU.GDSC  <- CompareTwoStudies_Rcorr(meth.ohsu, meth.sanger, "spearman")
 METH.COR.OHSU.BROAD  <- CompareTwoStudies_Rcorr(meth.ohsu, meth.broad, "spearman")
 METH.COR.GDSC.BROAD  <- CompareTwoStudies_Rcorr(meth.gdsc, meth.broad, "spearman")
 
-#save correlation matrices 
+# save correlation matrices 
 allvars <- ls()
 corvars <- allvars[grep("METH.COR", allvars)]
 METH.COR.long <- CollapseCorMatrices(corvars)
@@ -36,14 +148,28 @@ saveRDS(file="clip-meta/processed_files/reprod_analysis/meth_cor_long.rds", METH
 ######################################################################
 #####     Assess reproducibility of MUTATION profiles              ###
 ######################################################################
-load("clip-meta/data/MUT.RData")
+
+
+# load Mutation profiles
+path = "clip-meta/data/"
+modality = "MUT"
+MUT.list <- loadData(path, modality)
+for (i in 1:length(MUT.list)){
+  dname <- names(MUT.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = MUT.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(MUT.list)
+
 
 #
 # Matthew's Correlation coefficient = Pearson correlation coefficient estimated for two binary variables
-MUT.COR.GDSC.CCLE <- CompareTwoStudies_Rcorr(mut.gdsc, mut.broad, "pearson")
-MUT.COR.GDSC.NCI60 <- CompareTwoStudies_Rcorr(mut.gdsc, mut.nci60, "pearson")
-MUT.COR.GDSC.OHSU <- CompareTwoStudies_Rcorr(mut.gdsc, mut.ohsu, "pearson")
-MUT.COR.GDSC.gCSI <- CompareTwoStudies_Rcorr(mut.gdsc, mut.gcsi, "pearson")
+MUT.COR.GDSC.CCLE <- CompareTwoStudies_Rcorr(mut.sanger, mut.broad, "pearson")
+MUT.COR.GDSC.NCI60 <- CompareTwoStudies_Rcorr(mut.sanger, mut.nci60, "pearson")
+MUT.COR.GDSC.OHSU <- CompareTwoStudies_Rcorr(mut.sanger, mut.ohsu, "pearson")
+MUT.COR.GDSC.gCSI <- CompareTwoStudies_Rcorr(mut.sanger, mut.gcsi, "pearson")
 
 MUT.COR.CCLE.NCI60 <- CompareTwoStudies_Rcorr(mut.broad, mut.nci60, "pearson")
 MUT.COR.CCLE.OHSU <- CompareTwoStudies_Rcorr(mut.broad, mut.ohsu, "pearson")
@@ -63,24 +189,36 @@ saveRDS(file="clip-meta/processed_files/reprod_analysis/mut_cor_long.rds", MUT.C
 #####     Assess reproducibility of COPY NUMBER profiles           ###
 ######################################################################
 
-load("clip-meta/data/CNV.RData")
+# load Copy number variation data
+path = "clip-meta/data/"
+modality = "CNV"
+CNV.list <- loadData(path, modality)
+for (i in 1:length(CNV.list)){
+  dname <- names(CNV.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = CNV.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(CNV.list)
 
-CNV.COR.UHN.GDSC <- CompareTwoStudies_Rcorr(cnv.uhn, cnv.gdsc, "spearman")
+
+CNV.COR.UHN.GDSC <- CompareTwoStudies_Rcorr(cnv.uhn, cnv.sanger, "spearman")
 CNV.COR.UHN.CCLE <- CompareTwoStudies_Rcorr(cnv.uhn, cnv.broad, "spearman")
 CNV.COR.UHN.NCI60 <- CompareTwoStudies_Rcorr(cnv.uhn, cnv.nci60, "spearman")
 CNV.COR.UHN.OHSU <- CompareTwoStudies_Rcorr(cnv.uhn, cnv.ohsu, "spearman")
 CNV.COR.UHN.gCSI <- CompareTwoStudies_Rcorr(cnv.uhn, cnv.gcsi, "spearman")
 
-CNV.COR.CCLE.GDSC <- CompareTwoStudies_Rcorr(cnv.broad, cnv.gdsc, "spearman")
+CNV.COR.CCLE.GDSC <- CompareTwoStudies_Rcorr(cnv.broad, cnv.sanger, "spearman")
 CNV.COR.CCLE.NCI60 <- CompareTwoStudies_Rcorr(cnv.broad, cnv.nci60, "spearman")
 CNV.COR.CCLE.OHSU <- CompareTwoStudies_Rcorr(cnv.broad, cnv.ohsu, "spearman")
 CNV.COR.CCLE.gCSI <- CompareTwoStudies_Rcorr(cnv.broad, cnv.gcsi, "spearman")
 
-CNV.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(cnv.nci60, cnv.gdsc, "spearman")
+CNV.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(cnv.nci60, cnv.sanger, "spearman")
 CNV.COR.NCI60.OHSU <- CompareTwoStudies_Rcorr(cnv.nci60, cnv.ohsu, "spearman")
 CNV.COR.NCI60.gCSI <- CompareTwoStudies_Rcorr(cnv.nci60, cnv.gcsi, "spearman")
 
-CNV.COR.OHSU.GDSC <- CompareTwoStudies_Rcorr(cnv.ohsu, cnv.gdsc, "spearman")
+CNV.COR.OHSU.GDSC <- CompareTwoStudies_Rcorr(cnv.ohsu, cnv.sanger, "spearman")
 CNV.COR.OHSU.gCSI <- CompareTwoStudies_Rcorr(cnv.ohsu, cnv.gcsi, "spearman")
 CNV.COR.gCSI.GDSC <- CompareTwoStudies_Rcorr(cnv.gcsi, cnv.gdsc, "spearman")
 
@@ -97,7 +235,18 @@ saveRDS(file="clip-meta/processed_files/reprod_analysis/cnv_cor_long.rds", CNV.C
 #####     Assess reproducibility of TRANSCRIPTOME profiles         ###
 ######################################################################
 
-load("clip-meta/data/GEXP.RData")
+# load Gene expression data
+path = "clip-meta/data/"
+modality = "GEXP"
+GEXP.list <- loadData(path, modality)
+for (i in 1:length(GEXP.list)){
+  dname <- names(GEXP.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = GEXP.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(GEXP.list)
 
 #RNAseq vs. RNAseq
 GEXP.COR.UHN.OHSU <- CompareTwoStudies_Rcorr(gexp.uhn, gexp.ohsu, "spearman")
@@ -108,17 +257,17 @@ GEXP.COR.BROAD.gCSI <- CompareTwoStudies_Rcorr(gexp.broad, gexp.gcsi, "spearman"
 GEXP.COR.OHSU.gCSI <- CompareTwoStudies_Rcorr(gexp.ohsu, gexp.gcsi, "spearman")
 
 #RNAseq vs. Array
-GEXP.COR.UHN.GDSC <- CompareTwoStudies_Rcorr(gexp.uhn, gexp.gdsc, "spearman")
+GEXP.COR.UHN.GDSC <- CompareTwoStudies_Rcorr(gexp.uhn, gexp.sanger, "spearman")
 GEXP.COR.UHN.NCI60 <- CompareTwoStudies_Rcorr(gexp.uhn, gexp.nci60, "spearman")
 GEXP.COR.BROAD.GDSC <- CompareTwoStudies_Rcorr(gexp.broad, gexp.gdsc, "spearman")
 GEXP.COR.BROAD.NCI60 <- CompareTwoStudies_Rcorr(gexp.broad, gexp.nci60, "spearman")
-GEXP.COR.GDSC.OHSU <- CompareTwoStudies_Rcorr(gexp.gdsc, gexp.ohsu, "spearman")
-GEXP.COR.GDSC.gCSI <- CompareTwoStudies_Rcorr(gexp.gdsc, gexp.gcsi, "spearman")
+GEXP.COR.GDSC.OHSU <- CompareTwoStudies_Rcorr(gexp.sanger, gexp.ohsu, "spearman")
+GEXP.COR.GDSC.gCSI <- CompareTwoStudies_Rcorr(gexp.sanger, gexp.gcsi, "spearman")
 GEXP.COR.OHSU.NCI60 <- CompareTwoStudies_Rcorr(gexp.ohsu, gexp.nci60, "spearman")
 GEXP.COR.NCI60.gCSI <- CompareTwoStudies_Rcorr(gexp.nci60, gexp.gcsi, "spearman")
 
 #Array vs. Array
-GEXP.COR.GDSC.NCI60 <- CompareTwoStudies_Rcorr(gexp.gdsc, gexp.nci60, "spearman")
+GEXP.COR.GDSC.NCI60 <- CompareTwoStudies_Rcorr(gexp.sanger, gexp.nci60, "spearman")
 
 #save correlation matrices 
 allvars <- ls()
@@ -132,25 +281,36 @@ saveRDS(file="clip-meta/processed_files/reprod_analysis/gexp_cor_long.rds", GEXP
 #####     Assess reproducibility of PROTEOME profiles              ###
 ######################################################################
 
-load("clip-meta/data/PEXP.RData")
+# load Protein expression data
+path = "clip-meta/data/"
+modality = "PEXP"
+PEXP.list <- loadData(path, modality)
+for (i in 1:length(PEXP.list)){
+  dname <- names(PEXP.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = PEXP.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(PEXP.list)
 
 # TMT labeled vs. TMT labeled
-PEXP.COR.BROAD.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.ccle, pexp.mghcc_breast, "spearman")
-PEXP.COR.GDSC.MGHCC_BREAST   <- CompareTwoStudies_Rcorr(pexp.gdsc, pexp.mghcc_breast, "spearman")
-PEXP.COR.BROAD.GDSC <- CompareTwoStudies_Rcorr(pexp.ccle, pexp.gdsc, "spearman")
+PEXP.COR.BROAD.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.broad, pexp.mghcc_breast, "spearman")
+PEXP.COR.GDSC.MGHCC_BREAST   <- CompareTwoStudies_Rcorr(pexp.sanger, pexp.mghcc_breast, "spearman")
+PEXP.COR.BROAD.GDSC <- CompareTwoStudies_Rcorr(pexp.broad, pexp.sanger, "spearman")
 
 # Non-labeled vs. Non-labeled
 PEXP.COR.UW_TNBC.NCI60 <- CompareTwoStudies_Rcorr(pexp.uw_tnbc, pexp.nci60, "spearman")
-PEXP.COR.NCI60.MPIB_HGSOC <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.mipb_hgsoc, "spearman")
+PEXP.COR.NCI60.MPIB_HGSOC <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.mpib_hgsoc, "spearman")
 
 # TMT labeled  vs. Non-labeled
 PEXP.COR.UW_TNBC.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.uw_tnbc, pexp.mghcc_breast, "spearman")
 PEXP.COR.NCI60.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.mghcc_breast, "spearman")
-PEXP.COR.UW_TNBC.BROAD <- CompareTwoStudies_Rcorr(pexp.uw_tnbc, pexp.ccle, "spearman")
-PEXP.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.gdsc, "spearman")
-PEXP.COR.NCI60.BROAD <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.ccle, "spearman")
-PEXP.COR.BROAD.MPIB_HGSOC <- CompareTwoStudies_Rcorr(pexp.ccle, pexp.mipb_hgsoc, "spearman")
-PEXP.COR.GDSC.MPIB_HGSOC  <- CompareTwoStudies_Rcorr(pexp.gdsc, pexp.mipb_hgsoc, "spearman")
+PEXP.COR.UW_TNBC.BROAD <- CompareTwoStudies_Rcorr(pexp.uw_tnbc, pexp.broad, "spearman")
+PEXP.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.sanger, "spearman")
+PEXP.COR.NCI60.BROAD <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.broad, "spearman")
+PEXP.COR.BROAD.MPIB_HGSOC <- CompareTwoStudies_Rcorr(pexp.broad, pexp.mpib_hgsoc, "spearman")
+PEXP.COR.GDSC.MPIB_HGSOC  <- CompareTwoStudies_Rcorr(pexp.sanger, pexp.mpib_hgsoc, "spearman")
 
 #save correlation matrices 
 allvars <- ls()
@@ -161,7 +321,19 @@ saveRDS(file="clip-meta/processed_files/reprod_analysis/pexp_cor_long.rds", PEXP
 ######################################################################
 #####     Assess reproducibility of PHOSPHOPROTEOME profiles       ###
 ######################################################################
-load("clip-meta/data/PHOS.RData")
+# laod Protein phohphorylation data
+path = "clip-meta/data/"
+modality = "PHOS"
+PHOS.list <- loadData(path, modality)
+for (i in 1:length(PHOS.list)){
+  dname <- names(PHOS.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = PHOS.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(PHOS.list)
+
 
 # RPPA vs. RPPA
 PHOS.COR.UHN.OHSU <- CompareTwoStudies_Rcorr(phos.uhn, phos.ohsu, "spearman")
@@ -170,15 +342,15 @@ PHOS.COR.UHN.NCI60 <- CompareTwoStudies_Rcorr(phos.uhn, phos.nci60, "spearman")
 PHOS.COR.UHN.BROAD <- CompareTwoStudies_Rcorr(phos.uhn, phos.ccle, "spearman")
 PHOS.COR.OHSU.MCLP <- CompareTwoStudies_Rcorr(phos.ohsu, phos.mclp, "spearman")
 PHOS.COR.OHSU.NCI60 <- CompareTwoStudies_Rcorr(phos.ohsu, phos.nci60, "spearman")
-PHOS.COR.OHSU.BROAD <- CompareTwoStudies_Rcorr(phos.ohsu, phos.ccle, "spearman")
+PHOS.COR.OHSU.BROAD <- CompareTwoStudies_Rcorr(phos.ohsu, phos.broad, "spearman")
 PHOS.COR.MCLP.NCI60 <- CompareTwoStudies_Rcorr(phos.mclp, phos.nci60, "spearman")
-PHOS.COR.MCLP.BROAD <- CompareTwoStudies_Rcorr(phos.mclp, phos.ccle, "spearman")
-PHOS.COR.BROAD.NCI60 <- CompareTwoStudies_Rcorr(phos.ccle, phos.nci60, "spearman")
+PHOS.COR.MCLP.BROAD <- CompareTwoStudies_Rcorr(phos.mclp, phos.broad, "spearman")
+PHOS.COR.BROAD.NCI60 <- CompareTwoStudies_Rcorr(phos.broad, phos.nci60, "spearman")
 
 # RPPA vs. MS-based
-PHOS.COR.MCLP.GDSC <- CompareTwoStudies_Rcorr(phos.mclp, phos.gdsc, "spearman")
-PHOS.COR.BROAD.GDSC <- CompareTwoStudies_Rcorr(phos.ccle, phos.gdsc, "spearman")
-PHOS.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(phos.nci60, phos.gdsc, "spearman")
+PHOS.COR.MCLP.GDSC <- CompareTwoStudies_Rcorr(phos.mclp, phos.sanger, "spearman")
+PHOS.COR.BROAD.GDSC <- CompareTwoStudies_Rcorr(phos.broad, phos.sanger, "spearman")
+PHOS.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(phos.nci60, phos.sanger, "spearman")
 
 #save correlation matrices 
 allvars <- ls()
@@ -191,7 +363,20 @@ saveRDS(file="clip-meta/processed_files/reprod_analysis/phos_cor_long.rds", PHOS
 ######################################################################
 #####     Assess reproducibility of FUNCTIONAL profiles            ###
 ######################################################################
-load("clip-meta/data/FUNC.RData")
+
+# load Functional screening data
+path = "clip-meta/data/"
+modality = "FUNC"
+FUNC.list <- loadData(path, modality)
+for (i in 1:length(FUNC.list)){
+  dname <- names(FUNC.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = FUNC.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(FUNC.list)
+
 
 # RNAi vs. RNAi
 FUNC.COR.DRIVE.ACHILLES <- CompareTwoStudies_Rcorr(func.drive, func.broad_achilles, "spearman")
@@ -201,7 +386,7 @@ FUNC.COR.ACHILLES.UHN <- CompareTwoStudies_Rcorr(func.broad_achilles, func.uhn, 
 # CRISPR vs. CRISPR
 FUNC.COR.BROAD_AVANA.BROAD_GECKO <- CompareTwoStudies_Rcorr(func.broad_avana, func.broad_gecko, "spearman")
 FUNC.COR.BROAD_AVANA.BROAD_AML <- CompareTwoStudies_Rcorr(func.broad_avana, func.broad_aml, "spearman")
-FUNC.COR.BROAD_AVANA.GDSC <- CompareTwoStudies_Rcorr(func.broad_avana, func.gdsc, "spearman")
+FUNC.COR.BROAD_AVANA.GDSC <- CompareTwoStudies_Rcorr(func.broad_avana, func.sanger, "spearman")
 FUNC.COR.GDSC.BROAD_AML <- CompareTwoStudies_Rcorr(func.gdsc, func.broad_aml, "spearman")
 
 # RNAi vs. CRISPR
@@ -214,8 +399,8 @@ FUNC.COR.UHN.BROAD_AVANA <- CompareTwoStudies_Rcorr(func.uhn, func.broad_avana, 
 FUNC.COR.DRIVE.BROAD_AML <- CompareTwoStudies_Rcorr(func.drive, func.broad_aml, "spearman")
 FUNC.COR.ACHILLES.BROAD_AML <- CompareTwoStudies_Rcorr(func.broad_achilles, func.broad_aml, "spearman")
 FUNC.COR.DRIVE.GDSC <- CompareTwoStudies_Rcorr(func.drive, func.gdsc, "spearman")
-FUNC.COR.ACHILLES.GDSC <- CompareTwoStudies_Rcorr(func.broad_achilles, func.gdsc, "spearman")
-FUNC.COR.UHN.GDSC <- CompareTwoStudies_Rcorr(func.uhn, func.gdsc, "spearman")
+FUNC.COR.ACHILLES.GDSC <- CompareTwoStudies_Rcorr(func.broad_achilles, func.sanger, "spearman")
+FUNC.COR.UHN.GDSC <- CompareTwoStudies_Rcorr(func.uhn, func.sanger, "spearman")
 
 #save correlation matrices 
 allvars <- ls()
@@ -229,7 +414,18 @@ saveRDS(file="clip-meta/processed_files/reprod_analysis/func_cor_long.rds", FUNC
 #####     Assess reproducibility of DRUG SENSITIVITY profiles      ###
 ######################################################################
 
-load("clip-meta/data/DSS.RData")
+# load Drug sensitivity data
+path = "clip-meta/data/"
+modality = "DSS"
+DSS.list <- loadData(path, modality)
+for (i in 1:length(DSS.list)){
+  dname <- names(DSS.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = DSS.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(DSS.list)
 
 # CTG based vs. CTG based
 DSS.COR.BROAD_CCLE.BROAD_CTRP <- CompareTwoStudies_Rcorr(dss.broad_ccle, dss.broad_ctrp, "spearman")
@@ -244,11 +440,11 @@ DSS.COR.FIMM.OHSU <- CompareTwoStudies_Rcorr(dss.fimm, dss.ohsu, "spearman")
 DSS.COR.gCSI.OHSU <- CompareTwoStudies_Rcorr(dss.gcsi, dss.ohsu, "spearman")
 
 # CTG based vs. Fluorophore based
-DSS.COR.GDSC.BROAD_CCLE <- CompareTwoStudies_Rcorr(dss.gdsc, dss.broad_ccle, "spearman")
-DSS.COR.GDSC.BROAD_CTRP <- CompareTwoStudies_Rcorr(dss.gdsc, dss.broad_ctrp, "spearman")
-DSS.COR.GDSC.FIMM <- CompareTwoStudies_Rcorr(dss.gdsc, dss.fimm, "spearman")
-DSS.COR.GDSC.gCSI <- CompareTwoStudies_Rcorr(dss.gdsc, dss.gcsi, "spearman")
-DSS.COR.GDSC.OHSU <- CompareTwoStudies_Rcorr(dss.gdsc, dss.ohsu, "spearman")
+DSS.COR.GDSC.BROAD_CCLE <- CompareTwoStudies_Rcorr(dss.sanger, dss.broad_ccle, "spearman")
+DSS.COR.GDSC.BROAD_CTRP <- CompareTwoStudies_Rcorr(dss.sanger, dss.broad_ctrp, "spearman")
+DSS.COR.GDSC.FIMM <- CompareTwoStudies_Rcorr(dss.sanger, dss.fimm, "spearman")
+DSS.COR.GDSC.gCSI <- CompareTwoStudies_Rcorr(dss.sanger, dss.gcsi, "spearman")
+DSS.COR.GDSC.OHSU <- CompareTwoStudies_Rcorr(dss.sanger, dss.ohsu, "spearman")
 
 #save correlation matrices 
 allvars <- ls()
@@ -260,7 +456,18 @@ saveRDS(file="clip-meta/processed_files/reprod_analysis/dss_cor_long.rds", DSS.C
 ######################################################################
 #####     Assess reproducibility of TARGET ADDICTION profiles      ###
 ######################################################################
-load("clip-meta/data/TAS.RData")
+# load Target Addiction data
+path = "clip-meta/data/"
+modality = "TAS"
+TAS.list <- loadData(path, modality)
+for (i in 1:length(TAS.list)){
+  dname <- names(TAS.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = TAS.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(TAS.list)
 
 # CTG based vs. CTG based
 TAS.COR.BROAD_CCLE.BROAD_CTRP <- CompareTwoStudies_Rcorr(tas.broad_ccle, tas.broad_ctrp, "spearman")
@@ -276,11 +483,11 @@ TAS.COR.gCSI.OHSU <- CompareTwoStudies_Rcorr(tas.gcsi, tas.ohsu, "spearman")
 
 
 # CTG based vs. Fluorophore based
-TAS.COR.GDSC.BROAD_CCLE <- CompareTwoStudies_Rcorr(tas.gdsc, tas.broad_ccle, "spearman")
-TAS.COR.GDSC.BROAD_CTRP <- CompareTwoStudies_Rcorr(tas.gdsc, tas.broad_ctrp, "spearman")
-TAS.COR.GDSC.FIMM <- CompareTwoStudies_Rcorr(tas.gdsc, tas.fimm, "spearman")
-TAS.COR.GDSC.gCSI <- CompareTwoStudies_Rcorr(tas.gdsc, tas.gcsi, "spearman")
-TAS.COR.GDSC.OHSU <- CompareTwoStudies_Rcorr(tas.gdsc, tas.ohsu, "spearman")
+TAS.COR.GDSC.BROAD_CCLE <- CompareTwoStudies_Rcorr(tas.sanger, tas.broad_ccle, "spearman")
+TAS.COR.GDSC.BROAD_CTRP <- CompareTwoStudies_Rcorr(tas.sanger, tas.broad_ctrp, "spearman")
+TAS.COR.GDSC.FIMM <- CompareTwoStudies_Rcorr(tas.sanger, tas.fimm, "spearman")
+TAS.COR.GDSC.gCSI <- CompareTwoStudies_Rcorr(tas.sanger, tas.gcsi, "spearman")
+TAS.COR.GDSC.OHSU <- CompareTwoStudies_Rcorr(tas.sanger, tas.ohsu, "spearman")
 
 
 #save correlation matrices 
@@ -465,58 +672,149 @@ p <- p + scale_fill_manual(values = cols)
 p + stat_summary(fun = "mean", geom = "point", shape = 24, size = 3, color = "gray4",fill="white")
 
 #Make Corrplot
-MakeCorrPlot(PEXP.COR.long, order= c("BROAD", "MGHCC_BREAST", "SANGER", "NCI60", "UW_TNBC", "MPIB_HGSOC") )
+MakeCorrPlot(PEXP.COR.long, order= c("BROAD", "MGHCC_BREAST", "GDSC", "NCI60", "UW_TNBC", "MPIB_HGSOC") )
 
 
 ######################################################################
 #####     Reproduciblity measures by platform/technique            ###
 #####     PROTEOME profiles - Coefficient of variation CCV)        ###
 ######################################################################
+# load Protein expression data
+path = "clip-meta/data/"
+modality = "PEXP"
+PEXP.list <- loadData(path, modality)
+for (i in 1:length(PEXP.list)){
+  dname <- names(PEXP.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = PEXP.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(PEXP.list)
 
 # CV correlation between UW_TNBC and HAAS.BRCA
-load("clip-meta/data/PEXP.RData")
+# Read House keeping genes table
+# Obtained from Publication: https://www.cell.com/trends/genetics/fulltext/S0168-9525(13)00089-9#secsect0045
 housekeep.genes <- read.table("clip-meta/data/housekeeping-genes.txt", sep="\t", header = T, stringsAsFactors = F)
-
-
-##
-ccle.prot <- read.csv("~/Downloads/summed_sn_non_normalized.csv", stringsAsFactors = F)
-ccle.prot <- ccle.prot[, c(2,47:466)]
-colnames(ccle.prot) <- sapply(strsplit(colnames(ccle.prot), "\\_"), "[[", 1)
-ccle.prot[1:5, 1:10]
-ccle.prot[,-1] <- apply(ccle.prot[,-1],2,as.numeric)
-
-ccle.prot.list <- split(ccle.prot[,-1], ccle.prot$Gene)
-ccle.prot.mat <- lapply(ccle.prot.list, function(x) apply(x,2, function(y) mean(y, na.rm=T)))
-ccle.prot.mat <- do.call(rbind, ccle.prot.mat)
-
-#Check correlation of cell line duplicates
-dupProt <- ccle.prot.mat[, grep("SW948|CAL120|HCT15", colnames(ccle.prot.mat))]
-rcorr(dupProt, type = "spearman")
-
-#Remove duplcates
-ccle.prot.mat <- ccle.prot.mat[, setdiff(colnames(ccle.prot.mat), c("SW948.1", "CAL120.1", "HCT15.1"))]
-ccle.prot.mat <- ccle.prot.mat[sort(rownames(ccle.prot.mat)), sort(colnames(ccle.prot.mat))]
 
 #
 PlotCV(pexp.uw_tnbc, pexp.nci60, housekeep.genes, "UW_TNBC (CV)", "NCI60 (CV)")
-PlotCV(pexp.mipb_hgsoc, pexp.nci60, housekeep.genes, "MIPB_HGSOC (CV)", "NCI60 (CV)")
+PlotCV(pexp.mpib_hgsoc, pexp.nci60, housekeep.genes, "MPIB_HGSOC (CV)", "NCI60 (CV)")
 
-PlotCV(pexp.nci60, pexp.ccle, housekeep.genes, "NCI60 (CV)", "BROAD (CV)")
-#PlotCV(pexp.nci60, ccle.prot.mat, housekeep.genes, "NCI60 (CV)", "BROAD (CV)")
+PlotCV(pexp.nci60, pexp.broad, housekeep.genes, "NCI60 (CV)", "BROAD (CV)")
 PlotCV(pexp.nci60, pexp.mghcc_breast, housekeep.genes, "NCI60 (CV)", "MGHCC_BREAST (CV)")
-PlotCV(pexp.nci60, pexp.gdsc, housekeep.genes, "NCI60 (CV)", "GDSC (CV)")
-
-PlotCV(pexp.mipb_hgsoc, pexp.ccle, housekeep.genes, "MIPB_HGSOC (CV)", "BROAD (CV)")
-#PlotCV(pexp.mipb_hgsoc, ccle.prot.mat, housekeep.genes, "MIPB_HGSOC (CV)", "BROAD (CV)")
+PlotCV(pexp.nci60, pexp.sanger, housekeep.genes, "NCI60 (CV)", "GDSC (CV)")
 
 PlotCV(pexp.uw_tnbc, pexp.mghcc_breast, housekeep.genes, "UW_TNBC (CV)", "MGHCC_BREAST (CV)")
-PlotCV(pexp.uw_tnbc, pexp.ccle, housekeep.genes, "UW_TNBC (CV)", "BROAD (CV)")
-#PlotCV(pexp.uw_tnbc, ccle.prot.mat, housekeep.genes, "UW_TNBC (CV)", "BROAD (CV)")
+PlotCV(pexp.mpib_hgsoc, pexp.broad, housekeep.genes, "MPIB_HGSOC (CV)", "BROAD (CV)")
+PlotCV(pexp.uw_tnbc, pexp.broad, housekeep.genes, "UW_TNBC (CV)", "BROAD (CV)")
 
-PlotCV(pexp.mghcc_breast, pexp.ccle, housekeep.genes, "MGHCC_BREAST (CV)", "BROAD (CV)")
-PlotCV(pexp.mghcc_breast, ccle.prot.mat, housekeep.genes, "MGHCC_BREAST (CV)", "BROAD (CV)")
-#PlotCV(pexp.gdsc, ccle.prot.mat, housekeep.genes, "GDSC (CV)", "BROAD (CV)")
-PlotCV(pexp.gdsc, pexp.ccle, housekeep.genes, "GDSC (CV)", "BROAD (CV)")
+PlotCV(pexp.mghcc_breast, pexp.broad, housekeep.genes, "MGHCC_BREAST (CV)", "BROAD (CV)")
+PlotCV(pexp.sanger, pexp.broad, housekeep.genes, "GDSC (CV)", "BROAD (CV)")
+
+
+
+
+######################################################################
+#####     Assess reproducibility of PROTEOME profiles              ###
+#####     Non-normalized BROAD PEXP profiles                       ###
+######################################################################
+
+
+# load Protein expression data
+path = "clip-meta/data/"
+modality = "PEXP"
+PEXP.list <- loadData(path, modality)
+for (i in 1:length(PEXP.list)){
+  dname <- names(PEXP.list)[i]
+  dname <- tolower(paste(modality, dname, sep="."))
+  mat = PEXP.list[[i]]
+  assign(dname, as.data.frame(mat, stringsAsFactors = F))
+  rm(mat)
+}
+rm(PEXP.list)
+
+
+# read Non-normalized BROAD PEXP data
+# Downloaded from  https://gygi.med.harvard.edu/publications/ccle
+PEXP_NONORM.list <- h5dump("clip-meta/data/PEXP_BROAD_NONNORMALIZED.h5",load=TRUE)
+pexp.broad.nonnorm <- PEXP_NONORM.list$BROAD$mat
+colnames(pexp.broad.nonnorm) <- PEXP_NONORM.list$BROAD$colnames
+pexp.broad.nonnorm <- as.data.frame(pexp.broad.nonnorm, stringsAsFactors = F)
+pexp.broad.nonnorm[,-1] <- apply(pexp.broad.nonnorm[,-1],2,as.numeric)
+
+#Remove bridge columns 
+bridgeIDx <- grep("bridge", colnames(pexp.broad.nonnorm))
+pexp.broad.nonnorm <- pexp.broad.nonnorm[, -bridgeIDx]
+pexp.broad.nonnorm <- pexp.broad.nonnorm[order(pexp.broad.nonnorm$Gene.Symbol), ]
+
+#log transform
+pexp.broad.nonnorm[,-1] <- apply(pexp.broad.nonnorm[,-1],2,function(x) log2(x+1))
+colnames(pexp.broad.nonnorm) <- sapply(strsplit(colnames(pexp.broad.nonnorm), "\\_"), "[[", 1)
+
+#Average proteins with multiple peptides
+pexp.broad.nonnorm.list <- split(pexp.broad.nonnorm[,-1], pexp.broad.nonnorm$Gene)
+pexp.broad.nonnorm.list <- lapply(pexp.broad.nonnorm.list, function(x) apply(x,2, function(y) mean(y, na.rm=T)))
+pexp.broad.nonnorm <- do.call(rbind, pexp.broad.nonnorm.list)
+rownames(pexp.broad.nonnorm) <- gsub("#", "", rownames(pexp.broad.nonnorm))
+pexp.broad.nonnorm <- as.data.frame(pexp.broad.nonnorm, stringsAsFactors = F)
+
+#Assess reproducibility with before normalize data
+#TMT labeled vs. TMT labeled
+PEXP.COR.BROAD.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.broad.nonnorm, pexp.mghcc_breast, "spearman")
+PEXP.COR.GDSC.MGHCC_BREAST   <- CompareTwoStudies_Rcorr(pexp.sanger, pexp.mghcc_breast, "spearman")
+PEXP.COR.BROAD.GDSC <- CompareTwoStudies_Rcorr(pexp.broad.nonnorm, pexp.sanger, "spearman")
+
+# Non-labeled vs. Non-labeled
+PEXP.COR.UW_TNBC.NCI60 <- CompareTwoStudies_Rcorr(pexp.uw_tnbc, pexp.nci60, "spearman")
+PEXP.COR.NCI60.MPIB_HGSOC <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.mpib_hgsoc, "spearman")
+
+# TMT labeled  vs. Non-labeled
+PEXP.COR.UW_TNBC.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.uw_tnbc, pexp.mghcc_breast, "spearman")
+PEXP.COR.NCI60.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.mghcc_breast, "spearman")
+PEXP.COR.UW_TNBC.BROAD <- CompareTwoStudies_Rcorr(pexp.uw_tnbc, pexp.broad.nonnorm, "spearman")
+PEXP.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.sanger, "spearman")
+PEXP.COR.NCI60.BROAD <- CompareTwoStudies_Rcorr(pexp.nci60, pexp.broad.nonnorm, "spearman")
+PEXP.COR.BROAD.MPIB_HGSOC <- CompareTwoStudies_Rcorr(pexp.broad.nonnorm, pexp.mpib_hgsoc, "spearman")
+PEXP.COR.GDSC.MPIB_HGSOC  <- CompareTwoStudies_Rcorr(pexp.sanger, pexp.mpib_hgsoc, "spearman")
+
+#save correlation matrices 
+allvars <- ls()
+corvars <- allvars[grep("PEXP.COR", allvars)]
+PEXP.COR.long <- CollapseCorMatrices(corvars)
+
+
+#Subset to identical cell lines
+PEXP.COR.long <- PEXP.COR.long[PEXP.COR.long$ID == 1, ] #subset to identical cell lines
+
+#Change identifier
+PEXP.COR.long$Dataset1[PEXP.COR.long$Dataset1 == "GDSC"] = "SANGER"
+PEXP.COR.long$Dataset2[PEXP.COR.long$Dataset2 == "GDSC"] = "SANGER"
+
+# add platform info
+#GDSC, BROAD, MGHCC_BREAST  = TMT-labelled
+#NCI60, UW_TNBC,  MPIB_HGSOC = Non-labelled
+PEXP.COR.long$DATATYPE_CLASS <- paste(PEXP.COR.long$Dataset1, PEXP.COR.long$Dataset2, sep="_vs_" )
+PEXP.COR.long$DATA1_TYPE <- "NL"
+PEXP.COR.long$DATA2_TYPE <- "NL"
+PEXP.COR.long$DATA1_TYPE[grep("GDSC", PEXP.COR.long$Dataset1)] <- "TMT"
+PEXP.COR.long$DATA2_TYPE[grep("GDSC", PEXP.COR.long$Dataset2)] <- "TMT"
+PEXP.COR.long$DATA1_TYPE[grep("BROAD", PEXP.COR.long$Dataset1)] <- "TMT"
+PEXP.COR.long$DATA2_TYPE[grep("BROAD", PEXP.COR.long$Dataset2)] <- "TMT"
+PEXP.COR.long$DATA1_TYPE[grep("MGHCC_BREAST", PEXP.COR.long$Dataset1)] <- "TMT"
+PEXP.COR.long$DATA2_TYPE[grep("MGHCC_BREAST", PEXP.COR.long$Dataset2)] <- "TMT"
+PEXP.COR.long$DATATYPE_CLASS <- paste(PEXP.COR.long$DATA1_TYPE, PEXP.COR.long$DATA2_TYPE, sep="_" )
+table(PEXP.COR.long$DATATYPE_CLASS )
+
+#Statistical comparisons
+tmt_tmt_IDx <- grep("TMT_TMT", PEXP.COR.long$DATATYPE_CLASS) 
+tmt_nl_IDx <- grep("NL_TMT|TMT_NL", PEXP.COR.long$DATATYPE_CLASS) 
+nl_nl_IDx <- grep("NL_NL", PEXP.COR.long$DATATYPE_CLASS)
+
+
+#Make Corrplot
+MakeCorrPlot(PEXP.COR.long, order= c("BROAD", "MGHCC_BREAST", "SANGER", "NCI60", "UW_TNBC", "MPIB_HGSOC") )
+
 
 
 
@@ -705,295 +1003,6 @@ legend(0.5, 3.9, legend=c("MS-based/RPPA", "RPPA/RPPA"),
        pch=15, cex=1,col=c(c1, c2),
        box.col="white", title="", 
        bty="n", y.intersp=0.3, x.intersp=0.4)
-
-
-
-######################################################################
-#####     Assess reproducibility of PROTEOME profiles              ###
-#####     Normalized and un-normalized                             ###
-######################################################################
-
-
-load("~/Desktop/FIMM_Work/CLIP_Datasets/PEXP.RData")
-
-
-# Non-normalized CCLE data
-ccle.prot <- read.csv("~/Downloads/summed_sn_non_normalized.csv", stringsAsFactors = F)
-
-#ccle.prot <- readxl::read_xlsx("~/Downloads/Table_S2_Protein_Quant_Normalized.xlsx", sheet=2)
-ccle.prot <- as.data.frame(ccle.prot, stringsAsFactors=F)
-ccle.prot <- ccle.prot[, 1:426]
-ccle.prot <- ccle.prot[, c(2,47:426)]
-
-#Normalize by bridge
-bridgeIDx <- grep("bridge", colnames(ccle.prot))
-ccle.prot.norm <- c()
-for (i in bridgeIDx){
-  n2 = i-1
-  n1 = i - 9
-  ccle.prot1 <- ccle.prot[, c(1,n1:n2) ]
-  ccle.prot1 <- ccle.prot1[order(ccle.prot1$Gene.Symbol), ]
-  ccle.prot1 <- ccle.prot1[ccle.prot1$Gene.Symbol %in% rownames(pexp.ccle), ]
-  ccle.prot1[,-1] <- apply(ccle.prot1[,-1],2,function(x) log2(x+1))
-  colnames(ccle.prot1) <- sapply(strsplit(colnames(ccle.prot1), "\\_"), "[[", 1)
-  ccle.prot1.list <- split(ccle.prot1[,-1], ccle.prot1$Gene)
-  ccle.prot.mat <- lapply(ccle.prot1.list, function(x) apply(x,2, function(y) mean(y, na.rm=T)))
-  ccle.prot.mat <- do.call(rbind, ccle.prot.mat)
-  ccle.prot.norm <- cbind(ccle.prot.norm, ccle.prot.mat)
-}
-ccle.prot.norm <- as.data.frame(ccle.prot.norm, stringsAsFactors =F)
-
-
-# Before
-pdf("~/Desktop/FIMM_Work/CLIP_Review/PEXP_before.pdf", height = 6, width = 8)
-par(mfrow=c(2,3))
-plot(density(as.matrix(pexp.ccle), na.rm=T), main="CCLE", xlab="Bridge normalized", las=1)
-plot(density(as.matrix(pexp.mghcc_breast), na.rm=T), main="MGHCC_BREAST", xlab="Bridge normalized", las=1)
-plot(density(as.matrix(pexp.gdsc), na.rm=T), main="GDSC", cex.lab=0.7,las=1,
-     xlab="Sum of column-normalized (gene) \nTMT spectrum intensities \nfollowed by row-mean scaling")
-plot(density(as.matrix(pexp.uw_tnbc), na.rm=T), main="UW_TNBC", xlab="iBAQ", las=1)
-plot(density(as.matrix(pexp.nci60), na.rm=T), main="NCI60", xlab="LFQ", las=1)
-plot(density(as.matrix(pexp.mipb_hgsoc), na.rm=T), main="MIPB_HGSOC", xlab="LFQ", las=1)
-dev.off()
-
-# Normalize datasets
-#After
-pdf("~/Desktop/FIMM_Work/CLIP_Review/PEXP_after.pdf", height = 6, width = 8)
-par(mfrow=c(2,3))
-plot(density(as.matrix(ccle.prot.norm), na.rm=T), main="CCLE" , xlab="Non-normalized", las=1)
-pexp.mghcc_breast1 <- apply(pexp.mghcc_breast,2,log2)
-plot(density(as.matrix(pexp.mghcc_breast1), na.rm=T), main="MGHCC_BREAST", xlab="Bridge normalized + log2 transform", las=1)
-pexp.uw_tnbc1 <- apply(pexp.uw_tnbc,2,log2)
-plot(density(as.matrix(pexp.uw_tnbc1), na.rm=T), main="UW_TNBC", xlab="iBAQ + log2 transform", las=1)
-pexp.nci601 <- apply(pexp.nci60,2,log2)
-plot(density(as.matrix(pexp.nci601), na.rm=T), main="NCI60", xlab="LFQ + log2 transform", las=1)
-dev.off()
-
-
-#Assess reproducibility
-#TMT labeled vs. TMT labeled
-PEXP.COR.BROAD.MGHCC_BREAST <- CompareTwoStudies_Rcorr(ccle.prot.norm, pexp.mghcc_breast1, "spearman")
-PEXP.COR.GDSC.MGHCC_BREAST   <- CompareTwoStudies_Rcorr(pexp.gdsc, pexp.mghcc_breast1, "spearman")
-PEXP.COR.BROAD.GDSC <- CompareTwoStudies_Rcorr(ccle.prot.norm, pexp.gdsc, "spearman")
-
-# Non-labeled vs. Non-labeled
-PEXP.COR.UW_TNBC.NCI60 <- CompareTwoStudies_Rcorr(pexp.uw_tnbc1, pexp.nci601, "spearman")
-PEXP.COR.NCI60.MPIB_HGSOC <- CompareTwoStudies_Rcorr(pexp.nci601, pexp.mipb_hgsoc, "spearman")
-
-# TMT labeled  vs. Non-labeled
-PEXP.COR.UW_TNBC.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.uw_tnbc1, pexp.mghcc_breast1, "spearman")
-PEXP.COR.NCI60.MGHCC_BREAST <- CompareTwoStudies_Rcorr(pexp.nci601, pexp.mghcc_breast1, "spearman")
-PEXP.COR.UW_TNBC.BROAD <- CompareTwoStudies_Rcorr(pexp.uw_tnbc1, ccle.prot.norm, "spearman")
-PEXP.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(pexp.nci601, pexp.gdsc, "spearman")
-PEXP.COR.NCI60.BROAD <- CompareTwoStudies_Rcorr(pexp.nci601, ccle.prot.norm, "spearman")
-PEXP.COR.BROAD.MPIB_HGSOC <- CompareTwoStudies_Rcorr(ccle.prot.norm, pexp.mipb_hgsoc, "spearman")
-PEXP.COR.GDSC.MPIB_HGSOC  <- CompareTwoStudies_Rcorr(pexp.gdsc, pexp.mipb_hgsoc, "spearman")
-
-#save correlation matrices 
-allvars <- ls()
-corvars <- allvars[grep("PEXP.COR", allvars)]
-PEXP.COR.long <- CollapseCorMatrices(corvars)
-
-
-
-
-#### Corrplot GEXP vs. PEXP ######
-
-#
-GEXP.PEXP.COR.CCLE.UC_TNBC <- CompareTwoStudies_Rcorr(ccle.rnaseq, TNBC.prot, "spearman")
-GEXP.PEXP.COR.CCLE.CCLE <- CompareTwoStudies_Rcorr(ccle.rnaseq, ccle.prot.mat, "spearman")
-GEXP.PEXP.COR.CCLE.GDSC <- CompareTwoStudies_Rcorr(ccle.rnaseq, COLREC.prot, "spearman")
-GEXP.PEXP.COR.CCLE.MGHCC_BREAST <- CompareTwoStudies_Rcorr(ccle.rnaseq, HAAS.BRCA.prot, "spearman")
-GEXP.PEXP.COR.CCLE.NCI60 <- CompareTwoStudies_Rcorr(ccle.rnaseq, NCI60.prot, "spearman")
-GEXP.PEXP.COR.CCLE.MPIB_HGSOC <- CompareTwoStudies_Rcorr(ccle.rnaseq, OVCA.prot, "spearman")
-
-GEXP.PEXP.COR.GDSC.UC_TNBC <- CompareTwoStudies_Rcorr(gdsc.array, TNBC.prot, "spearman")
-GEXP.PEXP.COR.GDSC.CCLE <- CompareTwoStudies_Rcorr(gdsc.array, ccle.prot.mat, "spearman")
-GEXP.PEXP.COR.GDSC.GDSC <- CompareTwoStudies_Rcorr(gdsc.array, COLREC.prot, "spearman")
-GEXP.PEXP.COR.GDSC.MGHCC_BREAST <- CompareTwoStudies_Rcorr(gdsc.array, HAAS.BRCA.prot, "spearman")
-GEXP.PEXP.COR.GDSC.NCI60 <- CompareTwoStudies_Rcorr(gdsc.array, NCI60.prot, "spearman")
-GEXP.PEXP.COR.GDSC.MPIB_HGSOC <- CompareTwoStudies_Rcorr(gdsc.array, OVCA.prot, "spearman")
-
-GEXP.PEXP.COR.NCI60.UC_TNBC <- CompareTwoStudies_Rcorr(nci60.array, TNBC.prot, "spearman")
-GEXP.PEXP.COR.NCI60.CCLE <- CompareTwoStudies_Rcorr(nci60.array, ccle.prot.mat, "spearman")
-GEXP.PEXP.COR.NCI60.GDSC <- CompareTwoStudies_Rcorr(nci60.array, COLREC.prot, "spearman")
-GEXP.PEXP.COR.NCI60.MGHCC_BREAST <- CompareTwoStudies_Rcorr(nci60.array, HAAS.BRCA.prot, "spearman")
-GEXP.PEXP.COR.NCI60.NCI60 <- CompareTwoStudies_Rcorr(nci60.array, NCI60.prot, "spearman")
-GEXP.PEXP.COR.NCI60.MPIB_HGSOC <- CompareTwoStudies_Rcorr(nci60.array, OVCA.prot, "spearman")
-
-
-GEXP.PEXP.COR.UHN.UC_TNBC <- CompareTwoStudies_Rcorr(bfg.rnaseq, TNBC.prot, "spearman")
-GEXP.PEXP.COR.UHN.CCLE <- CompareTwoStudies_Rcorr(bfg.rnaseq, ccle.prot.mat, "spearman")
-GEXP.PEXP.COR.UHN.GDSC <- CompareTwoStudies_Rcorr(bfg.rnaseq, COLREC.prot, "spearman")
-GEXP.PEXP.COR.UHN.MGHCC_BREAST <- CompareTwoStudies_Rcorr(bfg.rnaseq, HAAS.BRCA.prot, "spearman")
-GEXP.PEXP.COR.UHN.NCI60 <- CompareTwoStudies_Rcorr(bfg.rnaseq, NCI60.prot, "spearman")
-GEXP.PEXP.COR.UHN.MPIB_HGSOC <- CompareTwoStudies_Rcorr(bfg.rnaseq, OVCA.prot, "spearman")
-
-
-GEXP.PEXP.COR.OHSU.UC_TNBC <- CompareTwoStudies_Rcorr(gray.rnaseq, TNBC.prot, "spearman")
-GEXP.PEXP.COR.OHSU.CCLE <- CompareTwoStudies_Rcorr(gray.rnaseq, ccle.prot.mat, "spearman")
-GEXP.PEXP.COR.OHSU.GDSC <- CompareTwoStudies_Rcorr(gray.rnaseq, COLREC.prot, "spearman")
-GEXP.PEXP.COR.OHSU.MGHCC_BREAST <- CompareTwoStudies_Rcorr(gray.rnaseq, HAAS.BRCA.prot, "spearman")
-GEXP.PEXP.COR.OHSU.NCI60 <- CompareTwoStudies_Rcorr(gray.rnaseq, NCI60.prot, "spearman")
-GEXP.PEXP.COR.OHSU.MPIB_HGSOC <- CompareTwoStudies_Rcorr(gray.rnaseq, OVCA.prot, "spearman")
-
-
-GEXP.PEXP.COR.gCSI.UC_TNBC <- CompareTwoStudies_Rcorr(klijn.rnaseq, TNBC.prot, "spearman")
-GEXP.PEXP.COR.gCSI.CCLE <- CompareTwoStudies_Rcorr(klijn.rnaseq, ccle.prot.mat, "spearman")
-GEXP.PEXP.COR.gCSI.GDSC <- CompareTwoStudies_Rcorr(klijn.rnaseq, COLREC.prot, "spearman")
-GEXP.PEXP.COR.gCSI.MGHCC_BREAST <- CompareTwoStudies_Rcorr(klijn.rnaseq, HAAS.BRCA.prot, "spearman")
-GEXP.PEXP.COR.gCSI.NCI60 <- CompareTwoStudies_Rcorr(klijn.rnaseq, NCI60.prot, "spearman")
-GEXP.PEXP.COR.gCSI.MPIB_HGSOC <- CompareTwoStudies_Rcorr(klijn.rnaseq, OVCA.prot, "spearman")
-
-
-#Process all cor matrices
-x <- ls()
-x <- x[grep("GEXP.PEXP.COR", x)]
-
-compare.views.cor.list.long <- list()
-for (n in x){
-  n.df <- get(n)
-  compare.views.cor.list.long[[n]] <- n.df
-}
-
-compare.views.cor.list.filtered <- list()
-for (n in 1:length(compare.views.cor.list.long)){
-  n.df <- compare.views.cor.list.long[[n]]
-  n.df$ID <- 0
-  n.df$ID[which(n.df$Cell1 == n.df$Cell2)] <- 1
-  n.df <- n.df[n.df$P < 0.05, ]
-  #n.df <- n.df[n.df$n >= 10, ]
-  if(nrow(n.df) == 0) next()
-  listName <- names(compare.views.cor.list.long)[n]
-  compare.views.cor.list.filtered[[listName]] <- cbind(n.df,listName)
-}
-do.call(rbind, lapply(compare.views.cor.list.filtered, dim))
-compare.views.cor.list.filtered <- do.call(rbind, compare.views.cor.list.filtered)
-compare.views.cor.list.filtered <- as.data.frame(compare.views.cor.list.filtered, stringsAsFactors = F)
-colnames(compare.views.cor.list.filtered)[7] <- "Comparison"
-compare.views.cor.list.filtered$Comparison <- as.character(compare.views.cor.list.filtered$Comparison)
-compare.views.cor.list.filtered$Cell1 <- as.character(compare.views.cor.list.filtered$Cell1)
-compare.views.cor.list.filtered$Cell2 <- as.character(compare.views.cor.list.filtered$Cell2)
-#compare.views.cor.list.filtered$Datatype <-  sapply(strsplit(compare.views.cor.list.filtered$Comparison, "\\."), "[[", 1)
-compare.views.cor.list.filtered$Dataset1 <-  sapply(strsplit(compare.views.cor.list.filtered$Comparison, "\\."), "[[", 4)
-compare.views.cor.list.filtered$Dataset2 <-  sapply(strsplit(compare.views.cor.list.filtered$Comparison, "\\."), "[[", 5)
-rownames(compare.views.cor.list.filtered) <- NULL
-compare.views.cor.list.filtered$Cor <- as.numeric(compare.views.cor.list.filtered$Cor)
-compare.views.cor.list.filtered$P <- as.numeric(compare.views.cor.list.filtered$P)
-compare.views.cor.list.filtered <- compare.views.cor.list.filtered[!is.na(compare.views.cor.list.filtered$Cor), ]
-save(file="~/Desktop/FIMM_Work/Misc_Projects/Breast_Genomics_Analysis//GEXP_PEXP_Correlation.RData", 
-     compare.views.cor.list.long, compare.views.cor.list.filtered,compress="bzip2")
-
-load("~/Desktop/FIMM_Work/Misc_Projects/Breast_Genomics_Analysis//GEXP_PEXP_Correlation.RData")
-
-#
-#Subset Identical and non-identical
-compare.cor.views.ID <- compare.views.cor.list.filtered[compare.views.cor.list.filtered$ID == 1, ]
-compare.cor.views.nonID <- compare.views.cor.list.filtered[compare.views.cor.list.filtered$ID == 0, ]
-
-
-Cor.GEXP.PEXP.COMPARE <- compare.cor.views.ID
-Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS <- paste(Cor.GEXP.PEXP.COMPARE$Dataset1, Cor.GEXP.PEXP.COMPARE$Dataset2, sep="_vs_" )
-Cor.GEXP.PEXP.COMPARE$DATA1_TYPE <- "RNAseq"
-Cor.GEXP.PEXP.COMPARE$DATA2_TYPE <- "NL"
-Cor.GEXP.PEXP.COMPARE$DATA1_TYPE[grep("GDSC|NCI60", Cor.GEXP.PEXP.COMPARE$Dataset1)] <- "Array"
-Cor.GEXP.PEXP.COMPARE$DATA2_TYPE[grep("GDSC|CCLE|MGHCC_BREAST", Cor.GEXP.PEXP.COMPARE$Dataset2)] <- "TMT"
-Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS <- paste(Cor.GEXP.PEXP.COMPARE$DATA1_TYPE, Cor.GEXP.PEXP.COMPARE$DATA2_TYPE, sep="_" )
-table(Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS )
-summary(Cor.GEXP.PEXP.COMPARE$Cor~Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS)
-summary(Cor.GEXP.PEXP.COMPARE$Cor~Cor.GEXP.PEXP.COMPARE$Dataset2)
-
-#Make density plot
-p1 <- grep("Array_NL", Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS) #Array vs NL
-p2 <- grep("Array_TMT", Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS) #Array vs TMT
-p3 <- grep("RNAseq_NL", Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS) #RNAseq vs NL
-p4 <- grep("RNAseq_TMT", Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS) #RNAseq vs TMT
-
-pcor1 <- Cor.GEXP.PEXP.COMPARE$Cor[p1]
-pcor2 <- Cor.GEXP.PEXP.COMPARE$Cor[p2]
-pcor3 <- Cor.GEXP.PEXP.COMPARE$Cor[p3]
-pcor4 <- Cor.GEXP.PEXP.COMPARE$Cor[p4]
-wilcox.test(pcor1,pcor2)
-wilcox.test(pcor1,pcor2)$p.value
-#p-value =3.114575e-66
-t.test(pcor1,pcor2)
-#Mean 0.4023826 0.2453164
-
-wilcox.test(pcor1,pcor3)
-wilcox.test(pcor1,pcor3)$p.value
-#p-value =8.372372e-53
-t.test(pcor1,pcor3)
-#Mean 0.4023826 0.5425047 
-
-wilcox.test(pcor1,pcor4)
-wilcox.test(pcor1,pcor4)$p.value
-#p-value =2.45304e-47
-t.test(pcor1,pcor4)
-#Mean 0.4023826 0.3116343 
-
-wilcox.test(pcor2,pcor3)
-wilcox.test(pcor2,pcor3)$p.value
-#p-value = 3.822005e-89
-t.test(pcor2,pcor3)
-#Mean 0.2453164 0.5425047 
-
-wilcox.test(pcor2,pcor4)
-wilcox.test(pcor2,pcor4)$p.value
-#p-value = 8.850125e-46
-t.test(pcor2,pcor4)
-#Mean 0.2453164 0.3116343
-
-wilcox.test(pcor3,pcor4)
-wilcox.test(pcor3,pcor4)$p.value
-#p-value = 4.119578e-105
-t.test(pcor3,pcor4)
-#Mean 0.5425047 0.3116343 
-
-Cor.GEXP.PEXP.COMPARE$DATATYPE_NUM <- 1
-Cor.GEXP.PEXP.COMPARE$DATATYPE_NUM[Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS == "RNAseq_TMT"] <- 2
-Cor.GEXP.PEXP.COMPARE$DATATYPE_NUM[Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS == "Array_NL"] <- 3
-Cor.GEXP.PEXP.COMPARE$DATATYPE_NUM[Cor.GEXP.PEXP.COMPARE$DATATYPE_CLASS == "Array_TMT"] <- 4
-p <- ggplot(Cor.GEXP.PEXP.COMPARE, aes(factor(DATATYPE_NUM), Cor))
-p <- p + theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-p <- p + geom_violin(aes(fill = factor(DATATYPE_NUM)), scale = "width", trim=FALSE, colour = "gray30") 
-cols <- c("1" = "powderblue", "2" = "seagreen3",
-          "3" = "lightslateblue", "4" = "mediumpurple4")
-p <- p + scale_fill_manual(values = cols)
-#p <-  p + geom_jitter(height = 0, width = 0.3, alpha=0.2, shape=19)
-p + stat_summary(fun.y = "mean", geom = "point", shape = 24, size = 3, color = "gray4",fill="white")
-quartz.save("/Volumes/Alok_New/FIMM/Breast_Genomics_Analysis_Tmp//Analysis/For_Paper/ViolinPlot_Correlation_GEXP_PEXP.pdf", 
-            type = "pdf", device = dev.cur(), dpi = 100, width=6, height=4)
-
-quartz.save("~/Desktop/FIMM_Work/Misc_Projects/Breast_Genomics_Analysis//Analysis/For_Paper/ViolinPlot_Correlation_GEXP_PEXP.pdf", 
-            type = "pdf", device = dev.cur(), dpi = 100, width=6, height=4)
-
-
-#Corrplot
-Cor.GEXP.PEXP.COMPARE.MAT <- dcast(Cor.GEXP.PEXP.COMPARE[,c(8,9,3)],Dataset1~Dataset2, fill=0, fun.aggregate = mean)
-Cor.GEXP.PEXP.COMPARE.MAT[,-1] <- apply(Cor.GEXP.PEXP.COMPARE.MAT[,-1],2, function(x){
-  x[x==0] = NA
-  return(x)})
-
-rownames(Cor.GEXP.PEXP.COMPARE.MAT) <- Cor.GEXP.PEXP.COMPARE.MAT$Dataset1
-Cor.GEXP.PEXP.COMPARE.MAT <- Cor.GEXP.PEXP.COMPARE.MAT[,-1]
-M <- as.matrix(Cor.GEXP.PEXP.COMPARE.MAT)
-colnames(M)[1] =  c("BROAD")
-rownames(M)[1] =  c("BROAD")
-M <- M[c(1,2,5,6,3,4), c(1,2,3,6,5,4)]
-r <- range(M, na.rm = T)
-bk1 = seq(0,0.1,length=10)
-bk2 = seq(0.2,0.7,length=30)
-hmcols1 <- colorRampPalette(c("gray"))(length(bk1))
-hmcols2 <- colorRampPalette(c("white","red"))(length(bk2))
-bk <- c(bk1, bk2)
-hmcols <- c(hmcols1,hmcols2)
-pheatmap(M, cluster_rows = F, cluster_cols = F, 
-         display_numbers=T, fontsize_number=12,
-         border_color = NA, color=hmcols, breaks=bk)
-quartz.save("/Volumes/Alok_New/FIMM/Breast_Genomics_Analysis_Tmp//Analysis/For_Paper/CorrPlot_Correlation_GEXP.PEXP_HM.pdf", 
-            type = "pdf", device = dev.cur(), dpi = 100, width=4, height=4)
-
-
 
 
 
